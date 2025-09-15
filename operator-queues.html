@@ -20,7 +20,7 @@
       }
       .loader {
         border: 4px solid #c7d2fe;
-        border-top-color: #6366f1;
+        border-top-color: #0079c2;
         border-radius: 50%;
         width: 40px;
         height: 40px;
@@ -32,7 +32,7 @@
     <!-- Сайдбар -->
     <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
       <div class="p-6 border-b border-gray-200">
-        <h1 class="text-xl font-bold text-indigo-600">Оператор</h1>
+        <h1 class="text-xl font-bold text-blue-600">Оператор</h1>
       </div>
       <nav class="flex-1 p-4">
         <ul class="space-y-2">
@@ -46,7 +46,7 @@
           <li>
             <a
               href="operator-queues.html"
-              class="block px-4 py-2 rounded-lg bg-indigo-600 text-white font-medium"
+              class="block px-4 py-2 rounded-lg bg-blue-600 text-white font-medium"
               >Очередь</a
             >
           </li>
@@ -61,7 +61,7 @@
         class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6"
       >
         <div class="font-medium text-gray-700">
-          Добро пожаловать, <span class="text-indigo-600">ivanov</span>
+          Добро пожаловать, <span class="text-blue-600">ivanov</span>
         </div>
         <div class="w-72">
           <div class="relative">
@@ -84,7 +84,7 @@
               </svg>
             </span>
             <select
-              class="block w-full appearance-none rounded-lg border border-gray-300 bg-white pl-10 pr-8 py-2 text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              class="block w-full appearance-none rounded-lg border border-gray-300 bg-white pl-10 pr-8 py-2 text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option>Начало рабочего дня</option>
               <option>Обеденный перерыв 60 мин</option>
@@ -122,7 +122,7 @@
         >
           <!-- Заголовок -->
           <div class="text-center">
-            <h1 class="text-2xl font-bold text-indigo-800">ПАНЕЛЬ ОПЕРАТОРА</h1>
+            <h1 class="text-2xl font-bold text-blue-800">ПАНЕЛЬ ОПЕРАТОРА</h1>
             <p class="text-sm text-gray-500 mt-1">
               Управление очередью клиентов
             </p>
@@ -133,10 +133,7 @@
             class="w-full bg-gray-100 rounded-lg p-3 flex flex-col items-center"
           >
             <div class="text-sm text-gray-600">Текущий статус</div>
-            <div
-              class="text-base font-semibold text-indigo-700 mt-1"
-              id="status"
-            >
+            <div class="text-base font-semibold text-blue-700 mt-1" id="status">
               Ожидание
             </div>
           </div>
@@ -148,11 +145,8 @@
           </div>
 
           <!-- Информация о клиенте -->
-          <div
-            class="w-full bg-indigo-50 rounded-lg p-3 hidden"
-            id="clientInfo"
-          >
-            <div class="text-center text-sm font-medium text-indigo-800">
+          <div class="w-full bg-blue-50 rounded-lg p-3 hidden" id="clientInfo">
+            <div class="text-center text-sm font-medium text-blue-800">
               Текущий клиент
             </div>
             <div class="flex justify-between text-sm mt-1">
@@ -166,25 +160,47 @@
           </div>
 
           <!-- Кнопки -->
-          <div class="flex gap-2 w-full mt-2">
-            <button
-              class="flex-1 py-2 bg-indigo-600 text-white rounded-md text-sm font-medium hover:bg-indigo-700 transition flex items-center justify-center gap-1"
-              onclick="callClient()"
-            >
-              <i class="fas fa-phone"></i> Вызвать
-            </button>
-            <button
-              class="flex-1 py-2 bg-amber-500 text-white rounded-md text-sm font-medium hover:bg-amber-600 transition flex items-center justify-center gap-1"
-              onclick="skipClient()"
-            >
-              <i class="fas fa-forward"></i> Пропустить
-            </button>
-            <button
-              class="flex-1 py-2 bg-red-600 text-white rounded-md text-sm font-medium hover:bg-red-700 transition flex items-center justify-center gap-1"
-              onclick="cancelCall()"
-            >
-              <i class="fas fa-times"></i> Отмена
-            </button>
+          <div class="flex flex-col w-full mt-2 gap-2">
+            <!-- Секция с кнопками действия -->
+            <div class="flex gap-2 w-full">
+              <button
+                class="flex-1 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition flex items-center justify-center gap-1"
+                onclick="callClient()"
+              >
+                <i class="fas fa-phone"></i> Вызвать
+              </button>
+              <button
+                class="flex-1 py-2 bg-amber-500 text-white rounded-md text-sm font-medium hover:bg-amber-600 transition flex items-center justify-center gap-1"
+                onclick="skipClient()"
+              >
+                <i class="fas fa-forward"></i> Пропустить
+              </button>
+              <button
+                class="flex-1 py-2 bg-red-600 text-white rounded-md text-sm font-medium hover:bg-red-700 transition flex items-center justify-center gap-1"
+                onclick="cancelCall()"
+              >
+                <i class="fas fa-times"></i> Отмена
+              </button>
+            </div>
+
+            <!-- Секция передачи клиенту -->
+            <div class="flex gap-2 w-full">
+              <select
+                id="operatorSelect"
+                class="flex-1 border border-slate-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-indigo-600 focus:outline-none"
+              >
+                <option value="" disabled selected>Выберите оператора</option>
+                <option value="operator1">Иван Иванов</option>
+                <option value="operator2">Мария Петрова</option>
+                <option value="operator3">Алексей Смирнов</option>
+              </select>
+              <button
+                class="flex-1 py-2 bg-purple-600 text-white rounded-md text-sm font-medium hover:bg-purple-700 transition flex items-center justify-center gap-1"
+                onclick="transferClient()"
+              >
+                <i class="fas fa-exchange-alt"></i> Передать
+              </button>
+            </div>
           </div>
 
           <!-- Статистика -->
@@ -201,6 +217,22 @@
         </div>
       </main>
     </div>
+
+    <script>
+      function transferClient() {
+        const select = document.getElementById("operatorSelect");
+        const operator = select.value;
+        if (!operator) {
+          alert("Выберите оператора для передачи!");
+          return;
+        }
+        alert(
+          "Клиент передан оператору: " +
+            select.options[select.selectedIndex].text
+        );
+        // Здесь можно добавить логику передачи клиенту на сервер
+      }
+    </script>
 
     <script>
       let calledCount = 0;

@@ -107,19 +107,19 @@
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-slate-100">
-                <tr class="bg-indigo-50">
+                <tr class="bg-blue-50">
                   <td
-                    class="px-6 py-4 whitespace-nowrap text-lg font-medium text-indigo-700"
+                    class="px-6 py-4 whitespace-nowrap text-lg font-medium text-blue-700"
                   >
                     38
                   </td>
                   <td
-                    class="px-6 py-4 whitespace-nowrap text-sm text-indigo-600"
+                    class="px-6 py-4 whitespace-nowrap text-sm text-blue-600"
                   >
                     Окно 2
                   </td>
                   <td
-                    class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-600"
+                    class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-blue-600"
                   >
                     Вызван
                   </td>
@@ -225,7 +225,7 @@
         <!-- Панель активного вызова -->
         <aside class="flex flex-col gap-6 items-stretch">
           <div
-            class="bg-gradient-to-r from-indigo-600 to-indigo-500 text-white rounded-xl p-6 flex flex-col items-center justify-center shadow-lg"
+            class="bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-xl p-6 flex flex-col items-center justify-center shadow-lg"
           >
             <div class="text-sm uppercase opacity-90">Сейчас вызывают</div>
             <div
@@ -311,16 +311,16 @@
         queue.forEach((row, idx) => {
           const tr = document.createElement("tr");
           const isActive = idx === activeIndex;
-          tr.className = isActive ? "bg-indigo-50" : "";
+          tr.className = isActive ? "bg-blue-50" : "";
           tr.innerHTML = `
           <td class="px-6 py-4 whitespace-nowrap text-lg font-medium ${
-            isActive ? "text-indigo-700" : "text-slate-700"
+            isActive ? "text-blue-700" : "text-slate-700"
           }">${row.ticket}</td>
           <td class="px-6 py-4 whitespace-nowrap text-sm ${
-            isActive ? "text-indigo-600" : "text-slate-600"
+            isActive ? "text-blue-600" : "text-slate-600"
           }">Окно ${row.window}</td>
           <td class="px-6 py-4 whitespace-nowrap text-sm ${
-            isActive ? "font-semibold text-indigo-600" : "text-slate-500"
+            isActive ? "font-semibold text-blue-600" : "text-slate-500"
           }">${isActive ? "Вызван" : row.status}</td>
           <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-slate-500">${
             row.time
