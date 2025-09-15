@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Супер Админ — Управление очередями</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                50: "#eef2ff",
+                100: "#e0e7ff",
+                200: "#c7d2fe",
+                300: "#a5b4fc",
+                400: "#818cf8",
+                500: "#6366f1",
+                600: "#4f46e5",
+                700: "#4338ca",
+                800: "#3730a3",
+                900: "#312e81",
+              },
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+      .pulse {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+      .status-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-indigo-50">
+    <!-- Главный контейнер -->
+    <div class="flex h-screen">
+      <!-- Боковая панель -->
+      <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
+        <!-- Заголовок боковой панели -->
+        <div class="p-6 border-b border-gray-200">
+          <h1 class="text-xl font-bold text-primary-600">Супер Админ</h1>
+          <p class="text-primary-400 mt-1 text-sm">Управление очередями</p>
+        </div>
+
+        <!-- Навигация -->
+        <nav class="flex-1 p-4">
+          <ul class="space-y-2">
+            <li>
+              <a
+                href="#"
+                class="block px-4 py-2 rounded-lg bg-primary-600 text-white font-medium"
+                >Очереди</a
+              >
+            </li>
+
+            <li>
+              <a
+                href="users.html"
+                class="block px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100"
+                >Пользователи</a
+              >
+            </li>
+            <li>
+              <a
+                href="roles.html"
+                class="block px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100"
+                >Роли</a
+              >
+            </li>
+
+            <li>
+              <a
+                href="#"
+                class="block px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100"
+                >Настройки</a
+              >
+            </li>
+          </ul>
+        </nav>
+
+        <!-- Нижняя часть -->
+        <div class="border-t border-gray-200 p-4">
+          <div class="flex items-center">
+            <div
+              class="bg-primary-600 flex h-10 w-10 items-center justify-center rounded-full"
+            >
+              <i class="fas fa-user text-white"></i>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm font-medium">Администратор</p>
+              <p class="text-primary-400 text-xs">online</p>
+            </div>
+          </div>
+        </div>
+      </aside>
+      <!-- Основное содержимое -->
+      <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Верхняя панель -->
+        <header
+          class="flex items-center justify-between border-b border-gray-200 bg-white p-4"
+        >
+          <div class="flex items-center">
+            <h2 class="text-xl font-semibold text-gray-800">
+              Управление очередями
+            </h2>
+          </div>
+
+          <div class="flex items-center space-x-4">
+            <button class="rounded-full p-2 hover:bg-gray-100">
+              <i class="fas fa-bell text-gray-500"></i>
+              <span
+                class="absolute top-2 right-2 h-2 w-2 rounded-full bg-red-500"
+              ></span>
+            </button>
+
+            <div class="relative">
+              <input
+                type="text"
+                placeholder="Поиск..."
+                class="focus:ring-primary-500 rounded-lg border border-gray-300 py-2 pr-4 pl-10 focus:border-transparent focus:ring-2"
+              />
+              <i class="fas fa-search absolute top-3 left-3 text-gray-400"></i>
+            </div>
+          </div>
+        </header>
+
+        <!-- Основной контент -->
+        <div class="flex-1 overflow-auto bg-indigo-50 p-6">
+          <!-- Карточки статистики -->
+          <div
+            class="mb-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4"
+          >
+            <div
+              class="rounded-xl border-l-4 border-blue-500 bg-white p-5 shadow-sm"
+            >
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-gray-500">Всего в очереди</p>
+                  <p class="text-2xl font-bold text-gray-800">24</p>
+                </div>
+                <div
+                  class="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100"
+                >
+                  <i class="fas fa-users text-blue-500"></i>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="rounded-xl border-l-4 border-green-500 bg-white p-5 shadow-sm"
+            >
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-gray-500">Обслужено сегодня</p>
+                  <p class="text-2xl font-bold text-gray-800">18</p>
+                </div>
+                <div
+                  class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100"
+                >
+                  <i class="fas fa-check-circle text-green-500"></i>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="rounded-xl border-l-4 border-yellow-500 bg-white p-5 shadow-sm"
+            >
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-gray-500">Среднее время</p>
+                  <p class="text-2xl font-bold text-gray-800">7 мин</p>
+                </div>
+                <div
+                  class="flex h-12 w-12 items-center justify-center rounded-full bg-yellow-100"
+                >
+                  <i class="fas fa-clock text-yellow-500"></i>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="rounded-xl border-l-4 border-red-500 bg-white p-5 shadow-sm"
+            >
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-gray-500">Пропущено</p>
+                  <p class="text-2xl font-bold text-gray-800">2</p>
+                </div>
+                <div
+                  class="flex h-12 w-12 items-center justify-center rounded-full bg-red-100"
+                >
+                  <i class="fas fa-times-circle text-red-500"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Панель управления -->
+          <div class="mb-6 rounded-xl bg-white p-6 shadow-sm">
+            <div class="mb-6 flex items-center justify-between">
+              <h3 class="text-lg font-semibold text-gray-800">
+                Управление очередями
+              </h3>
+              <div class="flex space-x-3">
+                <button
+                  class="bg-primary-600 hover:bg-primary-700 flex items-center rounded-lg px-4 py-2 text-white"
+                >
+                  <i class="fas fa-plus mr-2"></i> Добавить
+                </button>
+                <button
+                  class="flex items-center rounded-lg border border-gray-300 px-4 py-2 hover:bg-gray-50"
+                >
+                  <i class="fas fa-filter mr-2"></i> Фильтр
+                </button>
+                <button
+                  class="flex items-center rounded-lg border border-gray-300 px-4 py-2 hover:bg-gray-50"
+                >
+                  <i class="fas fa-sync-alt mr-2"></i> Обновить
+                </button>
+              </div>
+            </div>
+
+            <!-- Таблица -->
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead>
+                  <tr>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+                    >
+                      #
+                    </th>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+                    >
+                      Номер талона
+                    </th>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+                    >
+                      Окно
+                    </th>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+                    >
+                      Время ожидания
+                    </th>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+                    >
+                      Статус
+                    </th>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase"
+                    >
+                      Действия
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                  <!-- Строки таблицы -->
+                  <tr class="transition hover:bg-gray-50">
+                    <td
+                      class="px-6 py-4 text-sm font-medium whitespace-nowrap text-gray-800"
+                    >
+                      1
+                    </td>
+                    <td
+                      class="px-6 py-4 text-sm font-bold whitespace-nowrap text-gray-800"
+                    >
+                      23
+                    </td>
+                    <td
+                      class="px-6 py-4 text-sm whitespace-nowrap text-gray-800"
+                    >
+                      Окно 5
+                    </td>
+                    <td
+                      class="px-6 py-4 text-sm whitespace-nowrap text-gray-800"
+                    >
+                      5 мин
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span class="status-badge bg-blue-100 text-blue-800"
+                        >В ожидании</span
+                      >
+                    </td>
+                    <td class="px-6 py-4 text-sm whitespace-nowrap">
+                      <button class="mr-2 text-green-600 hover:text-green-800">
+                        <i class="fas fa-check-circle"></i>
+                      </button>
+                      <button class="text-red-600 hover:text-red-800">
+                        <i class="fas fa-times-circle"></i>
+                      </button>
+                    </td>
+                  </tr>
+
+                  <tr class="transition hover:bg-gray-50">
+                    <td
+                      class="px-6 py-4 text-sm font-medium whitespace-nowrap text-gray-800"
+                    >
+                      2
+                    </td>
+                    <td
+                      class="px-6 py-4 text-sm font-bold whitespace-nowrap text-gray-800"
+                    >
+                      24
+                    </td>
+                    <td
+                      class="px-6 py-4 text-sm whitespace-nowrap text-gray-800"
+                    >
+                      Окно 3
+                    </td>
+                    <td
+                      class="px-6 py-4 text-sm whitespace-nowrap text-gray-800"
+                    >
+                      3 мин
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span class="status-badge bg-green-100 text-green-800"
+                        >Вызван</span
+                      >
+                    </td>
+                    <td class="px-6 py-4 text-sm whitespace-nowrap">
+                      <button class="mr-2 text-green-600 hover:text-green-800">
+                        <i class="fas fa-check-circle"></i>
+                      </button>
+                      <button class="text-red-600 hover:text-red-800">
+                        <i class="fas fa-times-circle"></i>
+                      </button>
+                    </td>
+                  </tr>
+
+                  <tr class="transition hover:bg-gray-50">
+                    <td
+                      class="px-6 py-4 text-sm font-medium whitespace-nowrap text-gray-800"
+                    >
+                      3
+                    </td>
+                    <td
+                      class="px-6 py-4 text-sm font-bold whitespace-nowrap text-gray-800"
+                    >
+                      25
+                    </td>
+                    <td
+                      class="px-6 py-4 text-sm whitespace-nowrap text-gray-800"
+                    >
+                      Окно 1
+                    </td>
+                    <td
+                      class="px-6 py-4 text-sm whitespace-nowrap text-gray-800"
+                    >
+                      10 мин
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span class="status-badge bg-red-100 text-red-800"
+                        >Пропущен</span
+                      >
+                    </td>
+                    <td class="px-6 py-4 text-sm whitespace-nowrap">
+                      <button class="mr-2 text-green-600 hover:text-green-800">
+                        <i class="fas fa-check-circle"></i>
+                      </button>
+                      <button class="text-red-600 hover:text-red-800">
+                        <i class="fas fa-times-circle"></i>
+                      </button>
+                    </td>
+                  </tr>
+
+                  <tr class="transition hover:bg-gray-50">
+                    <td
+                      class="px-6 py-4 text-sm font-medium whitespace-nowrap text-gray-800"
+                    >
+                      4
+                    </td>
+                    <td
+                      class="px-6 py-4 text-sm font-bold whitespace-nowrap text-gray-800"
+                    >
+                      26
+                    </td>
+                    <td
+                      class="px-6 py-4 text-sm whitespace-nowrap text-gray-800"
+                    >
+                      Окно 2
+                    </td>
+                    <td
+                      class="px-6 py-4 text-sm whitespace-nowrap text-gray-800"
+                    >
+                      2 мин
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span class="status-badge bg-yellow-100 text-yellow-800"
+                        >Обрабатывается</span
+                      >
+                    </td>
+                    <td class="px-6 py-4 text-sm whitespace-nowrap">
+                      <button class="mr-2 text-green-600 hover:text-green-800">
+                        <i class="fas fa-check-circle"></i>
+                      </button>
+                      <button class="text-red-600 hover:text-red-800">
+                        <i class="fas fa-times-circle"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Пагинация -->
+            <div class="mt-6 flex items-center justify-between">
+              <div class="text-sm text-gray-700">
+                Показаны с 1 по 4 из 24 записей
+              </div>
+              <div class="flex space-x-2">
+                <button
+                  class="rounded-md border border-gray-300 px-3 py-1 text-gray-700 hover:bg-gray-50"
+                >
+                  Назад
+                </button>
+                <button
+                  class="border-primary-500 bg-primary-50 text-primary-600 rounded-md border px-3 py-1"
+                >
+                  1
+                </button>
+                <button
+                  class="rounded-md border border-gray-300 px-3 py-1 text-gray-700 hover:bg-gray-50"
+                >
+                  2
+                </button>
+                <button
+                  class="rounded-md border border-gray-300 px-3 py-1 text-gray-700 hover:bg-gray-50"
+                >
+                  3
+                </button>
+                <button
+                  class="rounded-md border border-gray-300 px-3 py-1 text-gray-700 hover:bg-gray-50"
+                >
+                  Вперед
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Дополнительные карточки -->
+          <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <!-- Карточка активности -->
+            <div class="rounded-xl bg-white p-6 shadow-sm">
+              <h3 class="mb-4 text-lg font-semibold text-gray-800">
+                Последняя активность
+              </h3>
+              <div class="space-y-4">
+                <div class="flex items-start">
+                  <div
+                    class="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-green-100"
+                  >
+                    <i class="fas fa-check text-green-600"></i>
+                  </div>
+                  <div>
+                    <p class="text-sm font-medium">Талон 18 обслужен</p>
+                    <p class="text-xs text-gray-500">2 минуты назад</p>
+                  </div>
+                </div>
+                <div class="flex items-start">
+                  <div
+                    class="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-blue-100"
+                  >
+                    <i class="fas fa-plus text-blue-600"></i>
+                  </div>
+                  <div>
+                    <p class="text-sm font-medium">Добавлен новый талон 19</p>
+                    <p class="text-xs text-gray-500">5 минут назад</p>
+                  </div>
+                </div>
+                <div class="flex items-start">
+                  <div
+                    class="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-red-100"
+                  >
+                    <i class="fas fa-times text-red-600"></i>
+                  </div>
+                  <div>
+                    <p class="text-sm font-medium">Талон 16 пропущен</p>
+                    <p class="text-xs text-gray-500">10 минут назад</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Карточка статистики по окнам -->
+            <div class="rounded-xl bg-white p-6 shadow-sm">
+              <h3 class="mb-4 text-lg font-semibold text-gray-800">
+                Статистика по окнам
+              </h3>
+              <div class="space-y-4">
+                <div>
+                  <div class="mb-1 flex justify-between">
+                    <span class="text-sm font-medium">Окно 1</span>
+                    <span class="text-sm font-medium">8/12</span>
+                  </div>
+                  <div class="h-2 w-full rounded-full bg-gray-200">
+                    <div
+                      class="h-2 rounded-full bg-green-600"
+                      style="width: 66%"
+                    ></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="mb-1 flex justify-between">
+                    <span class="text-sm font-medium">Окно 2</span>
+                    <span class="text-sm font-medium">5/12</span>
+                  </div>
+                  <div class="h-2 w-full rounded-full bg-gray-200">
+                    <div
+                      class="h-2 rounded-full bg-yellow-500"
+                      style="width: 42%"
+                    ></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="mb-1 flex justify-between">
+                    <span class="text-sm font-medium">Окно 3</span>
+                    <span class="text-sm font-medium">10/12</span>
+                  </div>
+                  <div class="h-2 w-full rounded-full bg-gray-200">
+                    <div
+                      class="h-2 rounded-full bg-red-600"
+                      style="width: 83%"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Простой скрипт для имитации работы интерфейса
+      document.addEventListener("DOMContentLoaded", function () {
+        // Обновление времени ожидания каждую минуту
+        setInterval(() => {
+          const timeCells = document.querySelectorAll(
+            "tbody tr td:nth-child(4)"
+          );
+          timeCells.forEach((cell) => {
+            const currentTime = parseInt(cell.textContent);
+            if (!isNaN(currentTime)) {
+              cell.textContent = currentTime + 1 + " мин";
+            }
+          });
+        }, 60000);
+      });
+    </script>
+  </body>
+</html>

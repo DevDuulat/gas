@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Электронная очередь — Терминал</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      .fade-in {
+        animation: fadeIn 0.4s ease-out;
+      }
+    </style>
+  </head>
+  <body
+    class="flex h-screen w-screen items-center justify-center bg-slate-50 text-slate-800"
+  >
+    <div
+      id="app"
+      class="flex h-full w-full flex-col max-w-md mx-auto border border-slate-200 rounded-xl shadow-lg overflow-hidden"
+    >
+      <!-- HEADER -->
+      <header
+        class="flex flex-col items-center bg-indigo-600 px-6 py-4 text-white"
+      >
+        <h1 class="text-2xl sm:text-3xl font-bold text-center">
+          Электронная очередь
+        </h1>
+        <div
+          id="nowTime"
+          class="mt-1 text-base sm:text-lg font-medium opacity-90"
+        >
+          —
+        </div>
+      </header>
+
+      <!-- MAIN: выбор услуги -->
+      <main
+        id="serviceScreen"
+        class="flex flex-1 flex-col items-center justify-start gap-6 overflow-y-auto px-4 py-6 w-full"
+      >
+        <p class="text-lg sm:text-xl font-semibold text-slate-700">
+          Выберите услугу
+        </p>
+
+        <!-- Группа 1 -->
+        <div class="w-full">
+          <h2 class="mb-2 text-md sm:text-lg font-medium text-slate-600">
+            Финансовые услуги
+          </h2>
+          <div class="flex flex-col gap-3">
+            <button
+              onclick="getTicket('Касса')"
+              class="w-full flex flex-col items-center rounded-2xl border border-slate-200 bg-white px-4 py-5 text-center shadow-md transition hover:shadow-lg"
+            >
+              <span class="text-xl sm:text-2xl font-semibold text-indigo-600"
+                >Касса</span
+              >
+              <span class="mt-1 text-sm sm:text-base text-slate-500"
+                >Оплата, приём наличных</span
+              >
+            </button>
+
+            <button
+              onclick="getTicket('Оплата счетов')"
+              class="w-full flex flex-col items-center rounded-2xl border border-slate-200 bg-white px-4 py-5 text-center shadow-md transition hover:shadow-lg"
+            >
+              <span class="text-xl sm:text-2xl font-semibold text-indigo-600"
+                >Оплата счетов</span
+              >
+              <span class="mt-1 text-sm sm:text-base text-slate-500"
+                >Коммунальные услуги, интернет</span
+              >
+            </button>
+          </div>
+        </div>
+
+        <!-- Группа 2 -->
+        <div class="w-full">
+          <h2 class="mb-2 text-md sm:text-lg font-medium text-slate-600">
+            Обслуживание клиентов
+          </h2>
+          <div class="flex flex-col gap-3">
+            <button
+              onclick="getTicket('Консультация')"
+              class="w-full flex flex-col items-center rounded-2xl border border-slate-200 bg-white px-4 py-5 text-center shadow-md transition hover:shadow-lg"
+            >
+              <span class="text-xl sm:text-2xl font-semibold text-indigo-600"
+                >Консультация</span
+              >
+              <span class="mt-1 text-sm sm:text-base text-slate-500"
+                >Вопросы, помощь специалиста</span
+              >
+            </button>
+
+            <button
+              onclick="getTicket('Документы')"
+              class="w-full flex flex-col items-center rounded-2xl border border-slate-200 bg-white px-4 py-5 text-center shadow-md transition hover:shadow-lg"
+            >
+              <span class="text-xl sm:text-2xl font-semibold text-indigo-600"
+                >Документы</span
+              >
+              <span class="mt-1 text-sm sm:text-base text-slate-500"
+                >Приём, оформление бумаг</span
+              >
+            </button>
+          </div>
+        </div>
+      </main>
+
+      <!-- MAIN: экран талона -->
+      <main
+        id="ticketScreen"
+        class="fade-in hidden flex-1 flex-col items-center justify-center gap-4 px-4 w-full"
+      >
+        <!-- Окно и оператор -->
+        <div
+          class="w-full rounded-xl bg-indigo-100 p-4 text-center shadow-md mb-4"
+        >
+          <div class="text-sm text-indigo-700 font-medium">
+            Окно: <span id="windowNumber">3</span>
+          </div>
+          <div class="text-sm text-indigo-700 font-medium">
+            Оператор: <span id="operatorName">Иванов И.И.</span>
+          </div>
+        </div>
+
+        <!-- Талон -->
+        <div class="w-full rounded-2xl bg-white p-8 text-center shadow-xl">
+          <div class="mb-1 text-sm text-slate-500">Ваш талон</div>
+          <div
+            id="ticketNumber"
+            class="text-5xl sm:text-6xl font-extrabold text-indigo-600"
+          >
+            —
+          </div>
+          <div
+            id="ticketService"
+            class="mt-1 text-lg sm:text-xl font-medium text-slate-700"
+          >
+            —
+          </div>
+
+          <!-- Дата и время -->
+          <div
+            id="ticketDateTime"
+            class="mt-2 text-sm sm:text-base text-slate-500"
+          ></div>
+
+          <p class="mt-4 text-sm sm:text-base text-slate-600">
+            Пожалуйста, ожидайте вызова на табло.
+          </p>
+        </div>
+
+        <script>
+          function updateTicketDateTime() {
+            const now = new Date();
+            const options = {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+            };
+            document.getElementById("ticketDateTime").textContent =
+              now.toLocaleString("ru-RU", options);
+          }
+
+          updateTicketDateTime();
+          setInterval(updateTicketDateTime, 1000);
+        </script>
+
+        <div class="flex justify-center w-full mt-4">
+          <button
+            onclick="backToServices()"
+            class="rounded-xl bg-indigo-600 px-6 py-3 text-lg font-medium text-white transition hover:bg-indigo-700"
+          >
+            Назад
+          </button>
+        </div>
+      </main>
+
+      <!-- FOOTER -->
+      <footer
+        class="flex text-center justify-center bg-slate-100 px-4 py-2 text-xs sm:text-sm text-slate-500"
+      >
+        Добро пожаловать!
+        <br />
+        Обслуживание клиентов ежедневно с 9:00 до 18:00
+      </footer>
+    </div>
+
+    <script>
+      let ticketCounter = 100;
+
+      function getTicket(service) {
+        ticketCounter++;
+        document.getElementById("ticketNumber").textContent = ticketCounter;
+        document.getElementById("ticketService").textContent = service;
+
+        // Здесь можно динамически менять окно и оператора, если нужно
+        document.getElementById("windowNumber").textContent =
+          Math.floor(Math.random() * 5) + 1; // пример случайного окна
+        document.getElementById("operatorName").textContent = [
+          "Иванов И.И.",
+          "Петрова М.С.",
+          "Смирнов А.А.",
+        ][Math.floor(Math.random() * 3)];
+
+        document.getElementById("serviceScreen").classList.add("hidden");
+        document.getElementById("ticketScreen").classList.remove("hidden");
+      }
+
+      function backToServices() {
+        document.getElementById("ticketScreen").classList.add("hidden");
+        document.getElementById("serviceScreen").classList.remove("hidden");
+      }
+
+      function updateTime() {
+        document.getElementById("nowTime").textContent =
+          new Date().toLocaleTimeString("ru-RU", {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          });
+      }
+      updateTime();
+      setInterval(updateTime, 1000);
+    </script>
+  </body>
+</html>

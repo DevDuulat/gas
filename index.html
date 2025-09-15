@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Главная | Демо UI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body class="bg-gray-50 min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-3xl w-full bg-white rounded-2xl shadow-xl p-8">
+      <h1 class="text-3xl font-bold text-indigo-700 text-center mb-6">
+        Навигация UI
+      </h1>
+      <p class="text-center text-gray-600 mb-6">
+        Выберите страницу для просмотра макета интерфейса:
+      </p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <!-- Авторизация -->
+        <a
+          href="login.html"
+          class="flex items-center justify-center gap-2 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition"
+        >
+          <i class="fas fa-sign-in-alt"></i> Авторизация
+        </a>
+
+        <!-- Сброс пароля -->
+        <a
+          href="reset-password.html"
+          class="flex items-center justify-center gap-2 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition"
+        >
+          <i class="fas fa-key"></i> Сброс пароля
+        </a>
+
+        <!-- Панель оператора -->
+        <a
+          href="operator.html"
+          class="flex items-center justify-center gap-2 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition"
+        >
+          <i class="fas fa-user-tie"></i> Панель оператора
+        </a>
+
+        <!-- Панель администратора -->
+        <a
+          href="admin.html"
+          class="flex items-center justify-center gap-2 py-3 bg-yellow-600 text-white font-medium rounded-lg hover:bg-yellow-700 transition"
+        >
+          <i class="fas fa-users-cog"></i> Панель администратора
+        </a>
+
+        <!-- Очередь для телевизора -->
+        <a
+          href="queue-display.html"
+          class="flex items-center justify-center gap-2 py-3 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 transition"
+        >
+          <i class="fas fa-tv"></i> Очередь (TV)
+        </a>
+
+        <!-- Список пользователей -->
+        <a
+          href="users.html"
+          class="flex items-center justify-center gap-2 py-3 bg-pink-600 text-white font-medium rounded-lg hover:bg-pink-700 transition"
+        >
+          <i class="fas fa-user-friends"></i> Пользователи
+        </a>
+
+        <!-- Добавить пользователя -->
+        <a
+          href="add-user.html"
+          class="flex items-center justify-center gap-2 py-3 bg-indigo-400 text-white font-medium rounded-lg hover:bg-indigo-500 transition"
+        >
+          <i class="fas fa-user-plus"></i> Добавить пользователя
+        </a>
+
+        <!-- Роли -->
+        <a
+          href="roles.html"
+          class="flex items-center justify-center gap-2 py-3 bg-teal-600 text-white font-medium rounded-lg hover:bg-teal-700 transition"
+        >
+          <i class="fas fa-user-shield"></i> Роли
+        </a>
+
+        <!-- Выбрать талон -->
+        <a
+          href="select-ticket.html"
+          class="flex items-center justify-center gap-2 py-3 bg-orange-600 text-white font-medium rounded-lg hover:bg-orange-700 transition"
+        >
+          <i class="fas fa-ticket-alt"></i> Выбрать талон
+        </a>
+
+        <!-- Последний талон -->
+        <a
+          href="last-ticket.html"
+          class="flex items-center justify-center gap-2 py-3 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition"
+        >
+          <i class="fas fa-ticket"></i> Чек талона
+        </a>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,417 @@
+<!-- Табло ожидания — Tailwind CSS -->
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Электронная очередь — Табло</title>
+    <!-- Для прототипа можно подключить Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* Мигающий эффект для активного номера */
+      @keyframes blink {
+        0% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.2;
+          transform: scale(1.04);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      .blink {
+        animation: blink 1.2s infinite;
+      }
+      /* Простая стилизация бегущей строки (fallback) */
+      .marquee {
+        white-space: nowrap;
+        overflow: hidden;
+      }
+      .marquee > div {
+        display: inline-block;
+        padding-left: 100%;
+        animation: marquee 18s linear infinite;
+      }
+      @keyframes marquee {
+        0% {
+          transform: translateX(0%);
+        }
+        100% {
+          transform: translateX(-100%);
+        }
+      }
+    </style>
+  </head>
+  <body
+    class="bg-slate-50 text-slate-800 min-h-screen flex items-center justify-center p-6"
+  >
+    <div
+      class="w-full max-w-6xl bg-white shadow-2xl rounded-2xl overflow-hidden"
+    >
+      <!-- HEADER -->
+      <header
+        class="px-8 py-6 border-b border-slate-200 flex items-center justify-between"
+      >
+        <div>
+          <h1 class="text-2xl font-semibold">Электронная очередь</h1>
+          <p class="text-sm text-slate-500 mt-1">
+            Пожалуйста, ожидайте вызова на указанное окно
+          </p>
+        </div>
+
+        <!-- Карточки статистики (кратко) -->
+        <div class="flex gap-4 items-center">
+          <div class="bg-slate-50 px-4 py-3 rounded-lg text-center">
+            <div class="text-xs text-slate-500">В очереди</div>
+            <div id="countQueue" class="text-lg font-medium">0</div>
+          </div>
+          <div class="bg-slate-50 px-4 py-3 rounded-lg text-center">
+            <div class="text-xs text-slate-500">Среднее ожидание</div>
+            <div id="avgWait" class="text-lg font-medium">—</div>
+          </div>
+        </div>
+      </header>
+
+      <!-- MAIN GRID: Таблица + Активный номер справа -->
+      <main class="grid grid-cols-1 lg:grid-cols-3 gap-6 px-8 py-8">
+        <!-- Список вызванных клиентов (таблица) -->
+        <section class="lg:col-span-2">
+          <div class="overflow-hidden rounded-lg border border-slate-200">
+            <table class="min-w-full divide-y divide-slate-200">
+              <thead class="bg-slate-50">
+                <tr>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"
+                  >
+                    Талон
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"
+                  >
+                    Окно
+                  </th>
+                  <th
+                    class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider"
+                  >
+                    Статус
+                  </th>
+                  <th
+                    class="px-6 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider"
+                  >
+                    Время
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-slate-100">
+                <tr class="bg-indigo-50">
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-lg font-medium text-indigo-700"
+                  >
+                    38
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm text-indigo-600"
+                  >
+                    Окно 2
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-indigo-600"
+                  >
+                    Вызван
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-right text-sm text-slate-500"
+                  >
+                    09:45
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-lg font-medium text-slate-700"
+                  >
+                    39
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm text-slate-600"
+                  >
+                    Окно 3
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"
+                  >
+                    Ожидает
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-right text-sm text-slate-500"
+                  >
+                    09:46
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-lg font-medium text-slate-700"
+                  >
+                    40
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm text-slate-600"
+                  >
+                    Окно 1
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"
+                  >
+                    Ожидает
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-right text-sm text-slate-500"
+                  >
+                    09:47
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-lg font-medium text-slate-700"
+                  >
+                    41
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm text-slate-600"
+                  >
+                    Окно 4
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"
+                  >
+                    Ожидает
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-right text-sm text-slate-500"
+                  >
+                    09:50
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-lg font-medium text-slate-700"
+                  >
+                    42
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm text-slate-600"
+                  >
+                    Окно 5
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"
+                  >
+                    Ожидает
+                  </td>
+                  <td
+                    class="px-6 py-4 whitespace-nowrap text-right text-sm text-slate-500"
+                  >
+                    09:52
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Панель активного вызова -->
+        <aside class="flex flex-col gap-6 items-stretch">
+          <div
+            class="bg-gradient-to-r from-indigo-600 to-indigo-500 text-white rounded-xl p-6 flex flex-col items-center justify-center shadow-lg"
+          >
+            <div class="text-sm uppercase opacity-90">Сейчас вызывают</div>
+            <div
+              id="activeTicket"
+              class="mt-4 text-6xl font-extrabold tracking-tight blink"
+            >
+              —
+            </div>
+            <div id="activeWindow" class="mt-2 text-xl font-medium opacity-95">
+              Окно —
+            </div>
+            <div class="mt-3 text-sm opacity-80">
+              Подойдите к указанному окну
+            </div>
+          </div>
+
+          <!-- Бегущая строка -->
+          <div
+            class="bg-slate-100 rounded-lg p-3 marquee"
+            aria-hidden="true"
+            role="marquee"
+          >
+            <div id="marqueeText">
+              Добро пожаловать. Следите за номерами. Соблюдайте дистанцию. Режим
+              работы: 9:00 — 18:00.
+            </div>
+          </div>
+
+          <!-- Лог и мелкие данные -->
+          <div class="bg-white border border-slate-200 rounded-lg p-4">
+            <div class="text-xs text-slate-500">Последние действия</div>
+            <ul
+              id="logList"
+              class="mt-2 text-sm text-slate-700 space-y-2 max-h-40 overflow-auto"
+            >
+              <!-- лог -->
+            </ul>
+          </div>
+        </aside>
+      </main>
+
+      <!-- FOOTER: Подписи / дата -->
+      <footer
+        class="px-8 py-4 border-t border-slate-100 text-sm text-slate-500 flex items-center justify-between"
+      >
+        <div>Версия интерфейса: 1.0</div>
+        <div id="nowTime">—</div>
+      </footer>
+    </div>
+
+    <!-- Скрипты: имитация данных + голос + мигать -->
+    <script>
+      // Пример данных — в продакшене заменить на WebSocket / Polling API
+      const sampleQueue = [
+        { ticket: "38", window: "2", status: "Ожидает", time: "09:45" },
+        { ticket: "39", window: "3", status: "Ожидает", time: "09:46" },
+        {
+          ticket: "40",
+          window: "1",
+          status: "Вызван",
+          time: "09:47",
+          active: true,
+        },
+        { ticket: "41", window: "4", status: "Ожидает", time: "09:50" },
+        { ticket: "42", window: "5", status: "Ожидает", time: "09:52" },
+      ];
+
+      // State
+      let queue = sampleQueue.slice();
+      let activeIndex = queue.findIndex((r) => r.active) || 0;
+
+      const queueBody = document.getElementById("queueBody");
+      const activeTicketEl = document.getElementById("activeTicket");
+      const activeWindowEl = document.getElementById("activeWindow");
+      const countQueueEl = document.getElementById("countQueue");
+      const avgWaitEl = document.getElementById("avgWait");
+      const logList = document.getElementById("logList");
+      const marqueeText = document.getElementById("marqueeText");
+      const nowTime = document.getElementById("nowTime");
+
+      function renderTable() {
+        queueBody.innerHTML = "";
+        queue.forEach((row, idx) => {
+          const tr = document.createElement("tr");
+          const isActive = idx === activeIndex;
+          tr.className = isActive ? "bg-indigo-50" : "";
+          tr.innerHTML = `
+          <td class="px-6 py-4 whitespace-nowrap text-lg font-medium ${
+            isActive ? "text-indigo-700" : "text-slate-700"
+          }">${row.ticket}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm ${
+            isActive ? "text-indigo-600" : "text-slate-600"
+          }">Окно ${row.window}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm ${
+            isActive ? "font-semibold text-indigo-600" : "text-slate-500"
+          }">${isActive ? "Вызван" : row.status}</td>
+          <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-slate-500">${
+            row.time
+          }</td>
+        `;
+          queueBody.appendChild(tr);
+        });
+        countQueueEl.textContent = queue.length;
+      }
+
+      function renderActive() {
+        const active = queue[activeIndex];
+        if (!active) {
+          activeTicketEl.textContent = "—";
+          activeWindowEl.textContent = "Окно —";
+          return;
+        }
+        activeTicketEl.textContent = active.ticket;
+        activeWindowEl.textContent = `Окно ${active.window}`;
+        // голосовое оповещение
+        speak(
+          `Талон ${active.ticket}. Просьба подойти к окну номер ${active.window}`
+        );
+        // лог
+        addLog(`Вызван ${active.ticket} → Окно ${active.window}`);
+      }
+
+      function addLog(text) {
+        const li = document.createElement("li");
+        const t = new Date();
+        li.textContent = `[${t.toLocaleTimeString()}] ${text}`;
+        logList.prepend(li);
+        // удержим лог в разумном размере
+        while (logList.children.length > 50)
+          logList.removeChild(logList.lastChild);
+      }
+
+      function speak(text) {
+        if (!("speechSynthesis" in window)) return;
+        try {
+          const utter = new SpeechSynthesisUtterance(text);
+          utter.lang = "ru-RU";
+          window.speechSynthesis.cancel(); // прервать предыдущие
+          window.speechSynthesis.speak(utter);
+        } catch (e) {
+          console.warn("TTS error", e);
+        }
+      }
+
+      // Простая имитация перехода на следующий вызов
+      function nextCall() {
+        activeIndex = (activeIndex + 1) % queue.length;
+        renderTable();
+        renderActive();
+        // визуальный эффект для активного номера (мигание уже задано CSS-klassой .blink)
+        // применим временно для выделения
+        activeTicketEl.classList.add("blink");
+        setTimeout(() => activeTicketEl.classList.remove("blink"), 6000);
+      }
+
+      // Инициализация
+      function init() {
+        renderTable();
+        renderActive();
+        // рассчитать примерное среднее ожидание (демо)
+        avgWaitEl.textContent = "8 мин";
+        // текущее время
+        setInterval(() => {
+          nowTime.textContent = new Date().toLocaleString();
+        }, 1000);
+
+        // Для демо: каждые 12 секунд переключаем активный вызов
+        setInterval(nextCall, 12000);
+      }
+
+      // Обновление текста бегущей строки (можно заменить с API)
+      function updateMarquee(text) {
+        marqueeText.textContent = text;
+      }
+
+      // Вызов init
+      init();
+
+      /* 
+      Интеграция в реальном проекте:
+      1) Подключить WebSocket или SSE, чтоб получать новые талончики / статусы в реальном времени.
+         При получении новых данных — обновлять `queue` и вызывать renderTable()/renderActive().
+      2) Голосовая подсказка: можно отключать по конфигу (например, для ночного режима).
+      3) Для крупных экранов удлинять шрифты и изменять сетку (CSS + responsive).
+      4) Безопасность: защитить веб-интерфейс от несанкционированных вызовов (только оператор может сменить статус).
+    */
+    </script>
+  </body>
+</html>

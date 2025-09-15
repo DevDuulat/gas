@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Панель оператора</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      .loader {
+        border: 4px solid #c7d2fe;
+        border-top-color: #6366f1;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 min-h-screen flex">
+    <!-- Сайдбар -->
+    <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
+      <div class="p-6 border-b border-gray-200">
+        <h1 class="text-xl font-bold text-indigo-600">Оператор</h1>
+      </div>
+      <nav class="flex-1 p-4">
+        <ul class="space-y-2">
+          <li>
+            <a
+              href="operator.html"
+              class="block px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100"
+              >Главная</a
+            >
+          </li>
+          <li>
+            <a
+              href="operator-queues.html"
+              class="block px-4 py-2 rounded-lg bg-indigo-600 text-white font-medium"
+              >Очередь</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Основная часть -->
+    <div class="flex-1 flex flex-col">
+      <!-- Шапка -->
+      <header
+        class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6"
+      >
+        <div class="font-medium text-gray-700">
+          Добро пожаловать, <span class="text-indigo-600">ivanov</span>
+        </div>
+        <div class="w-72">
+          <div class="relative">
+            <span
+              class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400"
+            >
+              <!-- Иконка часов -->
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"
+                />
+              </svg>
+            </span>
+            <select
+              class="block w-full appearance-none rounded-lg border border-gray-300 bg-white pl-10 pr-8 py-2 text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              <option>Начало рабочего дня</option>
+              <option>Обеденный перерыв 60 мин</option>
+              <option>Личный перерыв 5 мин</option>
+              <option>Собрание 30 мин</option>
+              <option>Тех. перерыв 30 мин</option>
+              <option>Конец рабочего дня</option>
+            </select>
+            <!-- Стрелка справа -->
+            <span
+              class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400"
+            >
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Контент -->
+      <main class="flex-1 p-6 overflow-y-auto">
+        <div
+          class="bg-white rounded-2xl shadow-2xl p-8 flex flex-col items-center gap-6 max-w-lg mx-auto"
+        >
+          <!-- Заголовок -->
+          <div class="text-center">
+            <h1 class="text-2xl font-bold text-indigo-800">ПАНЕЛЬ ОПЕРАТОРА</h1>
+            <p class="text-sm text-gray-500 mt-1">
+              Управление очередью клиентов
+            </p>
+          </div>
+
+          <!-- Статус -->
+          <div
+            class="w-full bg-gray-100 rounded-lg p-3 flex flex-col items-center"
+          >
+            <div class="text-sm text-gray-600">Текущий статус</div>
+            <div
+              class="text-base font-semibold text-indigo-700 mt-1"
+              id="status"
+            >
+              Ожидание
+            </div>
+          </div>
+
+          <!-- Loader -->
+          <div class="flex flex-col items-center justify-center mt-2">
+            <div class="loader"></div>
+            <div class="text-sm text-gray-500 mt-1">Обработка запроса...</div>
+          </div>
+
+          <!-- Информация о клиенте -->
+          <div
+            class="w-full bg-indigo-50 rounded-lg p-3 hidden"
+            id="clientInfo"
+          >
+            <div class="text-center text-sm font-medium text-indigo-800">
+              Текущий клиент
+            </div>
+            <div class="flex justify-between text-sm mt-1">
+              <span>Номер:</span>
+              <span class="font-semibold" id="clientNumber">A023</span>
+            </div>
+            <div class="flex justify-between text-sm">
+              <span>Ожидает:</span>
+              <span class="font-semibold" id="waitTime">5 мин</span>
+            </div>
+          </div>
+
+          <!-- Кнопки -->
+          <div class="flex gap-2 w-full mt-2">
+            <button
+              class="flex-1 py-2 bg-indigo-600 text-white rounded-md text-sm font-medium hover:bg-indigo-700 transition flex items-center justify-center gap-1"
+              onclick="callClient()"
+            >
+              <i class="fas fa-phone"></i> Вызвать
+            </button>
+            <button
+              class="flex-1 py-2 bg-amber-500 text-white rounded-md text-sm font-medium hover:bg-amber-600 transition flex items-center justify-center gap-1"
+              onclick="skipClient()"
+            >
+              <i class="fas fa-forward"></i> Пропустить
+            </button>
+            <button
+              class="flex-1 py-2 bg-red-600 text-white rounded-md text-sm font-medium hover:bg-red-700 transition flex items-center justify-center gap-1"
+              onclick="cancelCall()"
+            >
+              <i class="fas fa-times"></i> Отмена
+            </button>
+          </div>
+
+          <!-- Статистика -->
+          <div class="w-full grid grid-cols-2 gap-2 text-sm mt-3">
+            <div class="bg-blue-50 p-2 rounded-md text-center">
+              <div class="text-blue-800 font-semibold" id="calledCount">0</div>
+              <div class="text-blue-600">Вызвано</div>
+            </div>
+            <div class="bg-green-50 p-2 rounded-md text-center">
+              <div class="text-green-800 font-semibold" id="servedCount">0</div>
+              <div class="text-green-600">Обслужено</div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      let calledCount = 0;
+      let servedCount = 0;
+      let currentClient = null;
+      let isProcessing = false;
+
+      function generateClientNumber() {
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const numbers = "0123456789";
+        return (
+          letters[Math.floor(Math.random() * letters.length)] +
+          numbers[Math.floor(Math.random() * 10)] +
+          numbers[Math.floor(Math.random() * 10)] +
+          numbers[Math.floor(Math.random() * 10)]
+        );
+      }
+
+      function generateWaitTime() {
+        return Math.floor(Math.random() * 15) + 1;
+      }
+
+      function callClient() {
+        if (isProcessing) return;
+        isProcessing = true;
+        const statusEl = document.getElementById("status");
+        statusEl.textContent = "Вызов клиента";
+        statusEl.classList.add("text-green-600");
+        currentClient = generateClientNumber();
+        document.getElementById("clientNumber").textContent = currentClient;
+        document.getElementById("waitTime").textContent =
+          generateWaitTime() + " мин";
+        document.getElementById("clientInfo").classList.remove("hidden");
+        calledCount++;
+        document.getElementById("calledCount").textContent = calledCount;
+        setTimeout(() => {
+          isProcessing = false;
+          statusEl.textContent = "Клиент вызван";
+        }, 1500);
+      }
+
+      function skipClient() {
+        if (isProcessing || !currentClient) return;
+        isProcessing = true;
+        const statusEl = document.getElementById("status");
+        statusEl.textContent = "Пропуск клиента";
+        statusEl.classList.add("text-amber-600");
+        setTimeout(() => {
+          isProcessing = false;
+          statusEl.textContent = "Клиент пропущен";
+          document.getElementById("clientInfo").classList.add("hidden");
+          currentClient = null;
+        }, 1500);
+      }
+
+      function cancelCall() {
+        if (isProcessing) return;
+        isProcessing = true;
+        const statusEl = document.getElementById("status");
+        statusEl.textContent = "Отмена вызова";
+        statusEl.classList.add("text-red-600");
+        setTimeout(() => {
+          isProcessing = false;
+          statusEl.textContent = "Вызов отменен";
+          statusEl.classList.remove("text-green-600", "text-amber-600");
+          document.getElementById("clientInfo").classList.add("hidden");
+          if (currentClient) {
+            servedCount++;
+            document.getElementById("servedCount").textContent = servedCount;
+            currentClient = null;
+          }
+        }, 1500);
+      }
+    </script>
+  </body>
+</html>
